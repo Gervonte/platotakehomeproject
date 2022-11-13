@@ -17,9 +17,11 @@ import {
 	range
 } from './utils';
 import { useState } from 'react';
+import GeneralModal from '../modals/GeneralModal';
 export const Calendar = ({ startingDate, eventsArr, addEvent }) => {
 	const [currentMonth, setCurrentMonth] = useState(startingDate.getMonth());
 	const [currentYear, setCurrentYear] = useState(startingDate.getFullYear());
+	const [showModal, setShowModal] = useState(false);
 	const DAYSINMONTH = getDaysInMonth(currentMonth, currentYear);
 
 	const nextMonth = () => {
@@ -40,11 +42,17 @@ export const Calendar = ({ startingDate, eventsArr, addEvent }) => {
 		}
 	};
 
+	const toggleModal = () => {
+		setShowModal(!showModal);
+	};
+
 	const onAddEvent = date => {
 		addEvent(date, getRandomDarkColor());
 	};
+	//onAddEvent(getDateObj(day, currentMonth, currentYear))
 	return (
 		<Wrapper>
+			<GeneralModal isOpen={showModal} toggle={toggleModal} />
 			<CalendarHead>
 				<ion-icon
 					onClick={prevMonth}
@@ -66,9 +74,7 @@ export const Calendar = ({ startingDate, eventsArr, addEvent }) => {
 			<CalendarBody fourCol={DAYSINMONTH === 28}>
 				{range(DAYSINMONTH).map(day => (
 					<StyledDay
-						onClick={() =>
-							onAddEvent(getDateObj(day, currentMonth, currentYear))
-						}
+						onClick={() => toggleModal()}
 						active={areDatesTheSame(
 							new Date(),
 							getDateObj(day, currentMonth, currentYear)
