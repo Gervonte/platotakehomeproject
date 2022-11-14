@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
 import './GeneralModal.css';
 
 const GeneralModal = props => {
@@ -11,14 +11,47 @@ const GeneralModal = props => {
 				size='lg'
 				keyboard={false}
 				backdrop='static'
+				centered
 			>
 				<Modal.Header>
-					<Modal.Title>Success!</Modal.Title>
+					<Modal.Title>Add a reminder</Modal.Title>
 				</Modal.Header>
-				<Modal.Body>Thanks for your contribution!</Modal.Body>
+				<Modal.Body>
+					<Form>
+						<Form.Group>
+							<Form.Label>Title</Form.Label>
+							<Form.Control
+								type='text'
+								placeholder='Enter a title for your reminder (max 30 chars)'
+							/>
+						</Form.Group>
+						<br />
+						<Row className='mb-3'>
+							<Form.Group as={Col}>
+								<Form.Label>Date</Form.Label>
+								<Form.Control plaintext readOnly defaultValue='November 13th' />
+							</Form.Group>
+							<Form.Group as={Col}>
+								<Form.Label>Time</Form.Label>
+								<Form.Control type='time' />
+							</Form.Group>
+						</Row>
+						<Form.Group as={Col}>
+							<Form.Label>Color</Form.Label>
+							<Form.Control
+								type='color'
+								defaultValue='#563d7c'
+								title='Choose your color'
+							/>
+						</Form.Group>
+					</Form>
+				</Modal.Body>
 				<Modal.Footer>
-					<Button variant='primary' onClick={props.toggle}>
-						OK
+					<Button variant='secondary' onClick={props.toggle}>
+						Cancel
+					</Button>
+					<Button variant='primary' type='submit'>
+						Save Changes
 					</Button>
 				</Modal.Footer>
 			</Modal>
