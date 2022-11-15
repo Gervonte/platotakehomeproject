@@ -45,14 +45,14 @@ const GeneralModal = props => {
 							</Form.Group>
 							<Form.Group as={Col}>
 								<Form.Label>Time</Form.Label>
-								<Form.Control type='time' />
+								<Form.Control defaultValue={'00:00'} type='time' step={60} />
 							</Form.Group>
 						</Row>
 						<Form.Group as={Col}>
 							<Form.Label>Color</Form.Label>
 							<Form.Control
 								type='color'
-								defaultValue='#563d7c'
+								defaultValue='#0d6efd'
 								title='Choose your color'
 							/>
 						</Form.Group>

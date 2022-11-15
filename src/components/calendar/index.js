@@ -119,11 +119,16 @@ export const Calendar = ({ startingDate, remindersArr, addReminder }) => {
 						{remindersArr.map(
 							ev =>
 								isActiveReminder(
-									getDateObjWithTime(day, currentMonth, currentYear, ev.time),
+									getDateObjWithTime(day, currentMonth, currentYear),
 									ev.date
 								) && (
-									<StyledEvent key={ev.title} bgColor={ev?.color}>
-										{`${ev.title} ${ev.date.toLocaleTimeString()}`}
+									<StyledEvent key={ev.date.getTime()} bgColor={ev?.color}>
+										{`${ev.title}`}
+										<br />
+										{`${ev.date.toLocaleTimeString([], {
+											hour: '2-digit',
+											minute: '2-digit'
+										})}`}
 									</StyledEvent>
 								)
 						)}

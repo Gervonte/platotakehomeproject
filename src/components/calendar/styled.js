@@ -34,7 +34,7 @@ export const CalendarBody = styled.div`
 	display: grid;
 	grid-template-columns: repeat(7, 1fr);
 	grid-template-rows: repeat(${({ fourCol }) => (fourCol ? 5 : 5)}, 1fr);
-	background-color: darkgray;
+	background-color: gray;
 `;
 
 export const StyledDay = styled.span`
@@ -42,7 +42,7 @@ export const StyledDay = styled.span`
 	text-align: left;
 	padding: 3px;
 	background-color: white;
-	${({ active }) => active && `background: gray`}
+	${({ active }) => active && `background: darkgray`}
 `;
 
 export const StyledEvent = styled.span`
