@@ -11,17 +11,28 @@ import {
 import { DAYS, MONTHS } from './consts';
 import {
 	areDatesTheSame,
+	formDataToEventObj,
+	formDataToReminderObj,
 	getDateObj,
+	getDateObjWithTime,
 	getDaysInMonth,
 	getSortedDays,
+	isActiveReminder,
+	isToday,
 	range
 } from './utils';
 import { useState } from 'react';
 import GeneralModal from '../modals/GeneralModal';
-export const Calendar = ({ startingDate, eventsArr, addEvent }) => {
+export const Calendar = ({ startingDate, remindersArr, addReminder }) => {
 	const [currentMonth, setCurrentMonth] = useState(startingDate.getMonth());
 	const [currentYear, setCurrentYear] = useState(startingDate.getFullYear());
 	const [showModal, setShowModal] = useState(false);
+	const [modalProps, setModalProps] = useState({
+		type: null,
+		day: null,
+		currentMonth: null,
+		currentYear: null
+	});
 	const DAYSINMONTH = getDaysInMonth(currentMonth, currentYear);
 
 	const nextMonth = () => {
@@ -42,17 +53,40 @@ export const Calendar = ({ startingDate, eventsArr, addEvent }) => {
 		}
 	};
 
-	const toggleModal = () => {
+	const toggleModal = ({ type = 'add', day = '0' }) => {
+		if (!showModal) {
+			setModalProps({ type, day, currentMonth, currentYear });
+		}
 		setShowModal(!showModal);
 	};
-
-	const onAddEvent = date => {
-		addEvent(date, getRandomDarkColor());
+	const onAddReminder = (title, date, color) => {
+		addReminder(title, date, color);
 	};
+	const handleOnSubmit = event => {
+		event.preventDefault();
+		//0 - Title, 1 - Date, 2 - Time, 3 - color
+		const formData = [...event.target];
+		const {
+			title,
+			date: { day, month, year },
+			time,
+			color
+		} = formDataToReminderObj(formData);
+
+		onAddReminder(title, getDateObjWithTime(day, month, year, time), color);
+
+		toggleModal({ type: null, day: null });
+	};
+
 	//onAddEvent(getDateObj(day, currentMonth, currentYear))
 	return (
 		<Wrapper>
-			<GeneralModal isOpen={showModal} toggle={toggleModal} />
+			<GeneralModal
+				isOpen={showModal}
+				toggle={toggleModal}
+				onSubmit={handleOnSubmit}
+				modalProps={modalProps}
+			/>
 			<CalendarHead>
 				<ion-icon
 					onClick={prevMonth}
@@ -68,25 +102,30 @@ export const Calendar = ({ startingDate, eventsArr, addEvent }) => {
 			</CalendarHead>
 			<SevenColGrid>
 				{getSortedDays(currentMonth, currentYear).map(day => {
-					return <HeadDay>{day}</HeadDay>;
+					return <HeadDay key={`day ${day}`}>{day}</HeadDay>;
 				})}
 			</SevenColGrid>
 			<CalendarBody fourCol={DAYSINMONTH === 28}>
 				{range(DAYSINMONTH).map(day => (
 					<StyledDay
-						onClick={() => toggleModal()}
-						active={areDatesTheSame(
+						key={`day ${day}`}
+						onClick={() => toggleModal({ type: 'add', day })}
+						active={isToday(
 							new Date(),
 							getDateObj(day, currentMonth, currentYear)
 						)}
 					>
 						<p>{day}</p>
-						{eventsArr.map(
+						{remindersArr.map(
 							ev =>
-								areDatesTheSame(
-									getDateObj(day, currentMonth, currentYear),
+								isActiveReminder(
+									getDateObjWithTime(day, currentMonth, currentYear, ev.time),
 									ev.date
-								) && <StyledEvent bgColor={ev?.color}>{ev.title}</StyledEvent>
+								) && (
+									<StyledEvent key={ev.title} bgColor={ev?.color}>
+										{`${ev.title} ${ev.date.toLocaleTimeString()}`}
+									</StyledEvent>
+								)
 						)}
 					</StyledDay>
 				))}

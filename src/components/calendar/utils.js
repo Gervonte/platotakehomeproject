@@ -24,10 +24,41 @@ export const getDateObj = (day, month, year) => {
 	return new Date(year, month, day);
 };
 
-export const areDatesTheSame = (firstDate, secondDate) => {
+export const getDateObjWithTime = (day, month, year, time = '00:00') => {
+	const hours = time.substring(0, 2);
+	const minutes = time.substring(3, 5);
+
+	return new Date(year, month, day, hours, minutes);
+};
+
+export const isToday = (firstDate, secondDate) => {
 	return (
 		firstDate.getFullYear() === secondDate.getFullYear() &&
 		firstDate.getMonth() === secondDate.getMonth() &&
 		firstDate.getDate() === secondDate.getDate()
 	);
+};
+
+export const isActiveReminder = (firstDate, secondDate) => {
+	return (
+		firstDate.getFullYear() === secondDate.getFullYear() &&
+		firstDate.getMonth() === secondDate.getMonth() &&
+		firstDate.getDate() === secondDate.getDate()
+	);
+};
+
+export const formDataToReminderObj = formData => {
+	//0 - Title, 1 - Date, 2 - Time, 3 - color
+	const reminderObj = {
+		title: formData[0].value,
+		date: {
+			day: new Date(formData[1].value).getDate(),
+			month: new Date(formData[1].value).getMonth(),
+			year: new Date(formData[1].value).getFullYear()
+		},
+		time: formData[2].value,
+		color: formData[3].value
+	};
+	//console.log(reminderObj);
+	return reminderObj;
 };

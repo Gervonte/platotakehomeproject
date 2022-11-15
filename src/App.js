@@ -1,22 +1,30 @@
 import { useState } from 'react';
 import './App.css';
 import { Calendar } from './components/calendar';
-import { MOCKEVENTS } from './components/calendar/consts';
+import { MOCKREMINDERS } from './components/calendar/consts';
 
 function App() {
-	const [events, setEvents] = useState(MOCKEVENTS);
+	const [reminders, setReminders] = useState(MOCKREMINDERS);
+	//console.log(reminders);
+	const sortReminders = reminders => {
+		const remindersSorted = reminders.sort((a, b) => {
+			return a.date.getTime() - b.date.getTime();
+		});
+		return remindersSorted;
+	};
 
-	const addEvent = (date, color) => {
-		const title = window.prompt('text');
-		setEvents(prev => [...prev, { date, title, color }]);
+	const addReminder = (title, date, color) => {
+		setReminders(prev => {
+			return sortReminders([...prev, { date, title, color }]);
+		});
 	};
 
 	return (
 		<div>
 			<Calendar
 				startingDate={new Date()}
-				eventsArr={events}
-				addEvent={addEvent}
+				remindersArr={reminders}
+				addReminder={addReminder}
 			/>
 		</div>
 	);
