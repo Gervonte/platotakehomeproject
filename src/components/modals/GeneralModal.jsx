@@ -1,5 +1,4 @@
 import React from 'react';
-import { MONTHS } from '../calendar/consts';
 import { formatForDate } from '../calendar/utils';
 import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
 import './GeneralModal.css';

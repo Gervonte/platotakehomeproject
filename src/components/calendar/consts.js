@@ -14,5 +14,3 @@ export const MONTHS = [
 	'Nov',
 	'Dec'
 ];
-
-export const MOCKREMINDERS = [];

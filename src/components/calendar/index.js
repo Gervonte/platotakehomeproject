@@ -7,7 +7,7 @@ import {
 	StyledDay,
 	StyledEvent
 } from './styled';
-import { DAYS, MONTHS } from './consts';
+import { MONTHS } from './consts';
 import {
 	formDataToReminderObj,
 	getDateObj,
@@ -107,7 +107,7 @@ export const Calendar = ({
 	const onRemoveReminder = reminder => {
 		removeReminder(reminder);
 	};
-	const handleOnRemoveReminder = (event, reminder) => {
+	const handleOnRemoveReminder = reminder => {
 		onRemoveReminder(reminder);
 		toggleModal({ type: null, day: null });
 	};

@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import './App.css';
 import { Calendar } from './components/calendar';
-import { MOCKREMINDERS } from './components/calendar/consts';
 
 function App() {
-	const [reminders, setReminders] = useState(MOCKREMINDERS);
+	const [reminders, setReminders] = useState([]);
 
 	const sortReminders = reminders => {
 		const remindersSorted = reminders.sort((a, b) => {
