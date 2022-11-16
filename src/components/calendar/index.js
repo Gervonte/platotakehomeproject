@@ -5,13 +5,10 @@ import {
 	SevenColGrid,
 	HeadDay,
 	StyledDay,
-	StyledEvent,
-	getRandomDarkColor
+	StyledEvent
 } from './styled';
 import { DAYS, MONTHS } from './consts';
 import {
-	areDatesTheSame,
-	formDataToEventObj,
 	formDataToReminderObj,
 	getDateObj,
 	getDateObjWithTime,
@@ -27,7 +24,8 @@ export const Calendar = ({
 	startingDate,
 	remindersArr,
 	addReminder,
-	editReminder
+	editReminder,
+	removeReminder
 }) => {
 	const [currentMonth, setCurrentMonth] = useState(startingDate.getMonth());
 	const [currentYear, setCurrentYear] = useState(startingDate.getFullYear());
@@ -108,6 +106,13 @@ export const Calendar = ({
 
 		toggleModal({ type: null, day: null });
 	};
+	const onRemoveReminder = reminder => {
+		removeReminder(reminder);
+	};
+	const handleOnRemoveReminder = (event, reminder) => {
+		onRemoveReminder(reminder);
+		toggleModal({ type: null, day: null });
+	};
 
 	//onAddEvent(getDateObj(day, currentMonth, currentYear))
 	return (
@@ -117,6 +122,7 @@ export const Calendar = ({
 				toggle={toggleModal}
 				onAddReminder={handleOnAddReminder}
 				onEditReminder={handleOnEditReminder}
+				onRemoveReminder={handleOnRemoveReminder}
 				modalProps={modalProps}
 			/>
 			<CalendarHead>
@@ -150,7 +156,14 @@ export const Calendar = ({
 							getDateObj(day, currentMonth, currentYear)
 						)}
 					>
-						<p>{day}</p>
+						<p
+							onClick={event =>
+								event.currentTarget === event.target &&
+								toggleModal({ type: 'add', day })
+							}
+						>
+							{day}
+						</p>
 						{remindersArr.map(
 							ev =>
 								isActiveReminder(

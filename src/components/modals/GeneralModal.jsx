@@ -11,6 +11,10 @@ const GeneralModal = props => {
 	const handleOnEditReminder = (e, reminder) => {
 		props.onEditReminder(e, reminder);
 	};
+
+	const handleOnRemoveReminder = (e, reminder) => {
+		props.onRemoveReminder(e, reminder);
+	};
 	//console.log(props.modalProps);
 	return (
 		<div>
@@ -25,7 +29,23 @@ const GeneralModal = props => {
 				<Modal.Header>
 					<Modal.Title>
 						{props.modalProps.type === 'add' && `Add a reminder`}
-						{props.modalProps.type === 'edit' && `Edit reminder`}
+						{props.modalProps.type === 'edit' && (
+							<>
+								Edit Reminder{' '}
+								<ion-icon
+									onClick={e => {
+										handleOnRemoveReminder(e, props.modalProps.reminder);
+									}}
+									style={{
+										fontSize: '25px',
+										position: 'absolute',
+										right: '10px',
+										top: '21px'
+									}}
+									name='trash-outline'
+								/>
+							</>
+						)}
 					</Modal.Title>
 				</Modal.Header>
 				<Form
@@ -119,14 +139,16 @@ const GeneralModal = props => {
 										/>
 									</Form.Group>
 								</Row>
-								<Form.Group as={Col}>
-									<Form.Label>Color</Form.Label>
-									<Form.Control
-										type='color'
-										defaultValue={props.modalProps.reminder.color}
-										title='Choose your color'
-									/>
-								</Form.Group>
+								<Row className='mb-4'>
+									<Form.Group as={Col}>
+										<Form.Label>Color</Form.Label>
+										<Form.Control
+											type='color'
+											defaultValue={props.modalProps.reminder.color}
+											title='Choose your color'
+										/>
+									</Form.Group>
+								</Row>
 							</Modal.Body>
 							<Modal.Footer>
 								<Button variant='secondary' onClick={props.toggle}>

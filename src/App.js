@@ -59,6 +59,14 @@ function App() {
 		}
 	};
 
+	const removeReminder = reminder => {
+		setReminders(current => {
+			return current.filter(reminderToRemove => {
+				return reminderToRemove !== reminder;
+			});
+		});
+	};
+
 	return (
 		<div>
 			<Calendar
@@ -66,6 +74,7 @@ function App() {
 				remindersArr={reminders}
 				addReminder={addReminder}
 				editReminder={editReminder}
+				removeReminder={removeReminder}
 			/>
 		</div>
 	);
