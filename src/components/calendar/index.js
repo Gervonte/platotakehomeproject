@@ -107,7 +107,7 @@ export const Calendar = ({
 	const onRemoveReminder = reminder => {
 		removeReminder(reminder);
 	};
-	const handleOnRemoveReminder = reminder => {
+	const handleOnRemoveReminder = (event, reminder) => {
 		onRemoveReminder(reminder);
 		toggleModal({ type: null, day: null });
 	};
