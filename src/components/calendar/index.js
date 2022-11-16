@@ -23,7 +23,12 @@ import {
 } from './utils';
 import { useState } from 'react';
 import GeneralModal from '../modals/GeneralModal';
-export const Calendar = ({ startingDate, remindersArr, addReminder }) => {
+export const Calendar = ({
+	startingDate,
+	remindersArr,
+	addReminder,
+	editReminder
+}) => {
 	const [currentMonth, setCurrentMonth] = useState(startingDate.getMonth());
 	const [currentYear, setCurrentYear] = useState(startingDate.getFullYear());
 	const [showModal, setShowModal] = useState(false);
@@ -53,16 +58,18 @@ export const Calendar = ({ startingDate, remindersArr, addReminder }) => {
 		}
 	};
 
-	const toggleModal = ({ type = 'add', day = '0' }) => {
+	const toggleModal = ({ type = 'add', day = '0', reminder }) => {
 		if (!showModal) {
-			setModalProps({ type, day, currentMonth, currentYear });
+			type = 'edit'
+				? setModalProps({ type, day, currentMonth, currentYear, reminder })
+				: setModalProps({ type, day, currentMonth, currentYear });
 		}
 		setShowModal(!showModal);
 	};
 	const onAddReminder = (title, date, color) => {
 		addReminder(title, date, color);
 	};
-	const handleOnSubmit = event => {
+	const handleOnAddReminder = event => {
 		event.preventDefault();
 		//0 - Title, 1 - Date, 2 - Time, 3 - color
 		const formData = [...event.target];
@@ -77,6 +84,30 @@ export const Calendar = ({ startingDate, remindersArr, addReminder }) => {
 
 		toggleModal({ type: null, day: null });
 	};
+	const onEditReminder = (title, date, color, reminder) => {
+		editReminder(title, date, color, reminder);
+	};
+	const handleOnEditReminder = (event, reminder) => {
+		event.preventDefault();
+		//console.log(reminder);
+		//0 - Title, 1 - Date, 2 - Time, 3 - color
+		const formData = [...event.target];
+		const {
+			title,
+			date: { day, month, year },
+			time,
+			color
+		} = formDataToReminderObj(formData);
+
+		onEditReminder(
+			title,
+			getDateObjWithTime(day, month, year, time),
+			color,
+			reminder
+		);
+
+		toggleModal({ type: null, day: null });
+	};
 
 	//onAddEvent(getDateObj(day, currentMonth, currentYear))
 	return (
@@ -84,7 +115,8 @@ export const Calendar = ({ startingDate, remindersArr, addReminder }) => {
 			<GeneralModal
 				isOpen={showModal}
 				toggle={toggleModal}
-				onSubmit={handleOnSubmit}
+				onAddReminder={handleOnAddReminder}
+				onEditReminder={handleOnEditReminder}
 				modalProps={modalProps}
 			/>
 			<CalendarHead>
@@ -109,7 +141,10 @@ export const Calendar = ({ startingDate, remindersArr, addReminder }) => {
 				{range(DAYSINMONTH).map(day => (
 					<StyledDay
 						key={`day ${day}`}
-						onClick={() => toggleModal({ type: 'add', day })}
+						onClick={event =>
+							event.currentTarget === event.target &&
+							toggleModal({ type: 'add', day })
+						}
 						active={isToday(
 							new Date(),
 							getDateObj(day, currentMonth, currentYear)
@@ -122,14 +157,23 @@ export const Calendar = ({ startingDate, remindersArr, addReminder }) => {
 									getDateObjWithTime(day, currentMonth, currentYear),
 									ev.date
 								) && (
-									<StyledEvent key={ev.date.getTime()} bgColor={ev?.color}>
-										{`${ev.title}`}
-										<br />
-										{`${ev.date.toLocaleTimeString([], {
-											hour: '2-digit',
-											minute: '2-digit'
-										})}`}
-									</StyledEvent>
+									<div>
+										<StyledEvent
+											key={ev.date.getTime()}
+											bgColor={ev?.color}
+											onClick={event =>
+												event.currentTarget === event.target &&
+												toggleModal({ type: 'edit', day, reminder: ev })
+											}
+										>
+											{`${ev.title}`}
+											<br />
+											{`${ev.date.toLocaleTimeString([], {
+												hour: '2-digit',
+												minute: '2-digit'
+											})}`}
+										</StyledEvent>
+									</div>
 								)
 						)}
 					</StyledDay>

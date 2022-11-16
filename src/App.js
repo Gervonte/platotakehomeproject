@@ -20,16 +20,42 @@ function App() {
 			isValidReminder = false;
 			window.alert('Title is too long!');
 		}
-		reminders.forEach(reminder => {
-			if (reminder.date.getTime() === date.getTime()) {
-				isValidReminder = false;
-				window.alert('There is already a reminder at this time!');
-			}
-		});
+		// reminders.forEach(reminder => {
+		// 	if (reminder.date.getTime() === date.getTime()) {
+		// 		isValidReminder = false;
+		// 		window.alert('There is already a reminder at this time!');
+		// 	}
+		// });
 		if (isValidReminder) {
 			setReminders(prev => {
 				return sortReminders([...prev, { date, title, color }]);
 			});
+		}
+	};
+
+	const editReminder = (title, date, color, reminder) => {
+		let isValidReminder = true;
+
+		if (title.length > 30) {
+			isValidReminder = false;
+			window.alert('Title is too long!');
+		}
+		reminders.forEach(reminder => {
+			if (reminder.date.getTime() === date.getTime()) {
+				//isValidReminder = false;
+				//window.alert('There is already a reminder at this time!');
+			}
+		});
+
+		if (isValidReminder) {
+			const newState = reminders.map(reminderToReplace => {
+				if (reminderToReplace === reminder) {
+					return { date, title, color };
+				}
+				return reminderToReplace;
+			});
+
+			setReminders(sortReminders(newState));
 		}
 	};
 
@@ -39,6 +65,7 @@ function App() {
 				startingDate={new Date()}
 				remindersArr={reminders}
 				addReminder={addReminder}
+				editReminder={editReminder}
 			/>
 		</div>
 	);

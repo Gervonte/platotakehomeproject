@@ -15,8 +15,4 @@ export const MONTHS = [
 	'Dec'
 ];
 
-export const MOCKREMINDERS = [
-	{ date: new Date(2022, 9, 10), title: 'appointment' },
-	{ date: new Date(2022, 9, 15), title: 'car wash' },
-	{ date: new Date(2022, 9, 5), title: 'doctor appt' }
-];
+export const MOCKREMINDERS = [];
