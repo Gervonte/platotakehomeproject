@@ -20,6 +20,9 @@ function App() {
 			isValidReminder = false;
 			window.alert('Title is too long!');
 		}
+		if (!title.length) {
+			title = 'Unnamed Reminder';
+		}
 		// reminders.forEach(reminder => {
 		// 	if (reminder.date.getTime() === date.getTime()) {
 		// 		isValidReminder = false;
