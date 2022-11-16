@@ -69,7 +69,6 @@ export const Calendar = ({
 	};
 	const handleOnAddReminder = event => {
 		event.preventDefault();
-		//0 - Title, 1 - Date, 2 - Time, 3 - color
 		const formData = [...event.target];
 		const {
 			title,
@@ -87,8 +86,7 @@ export const Calendar = ({
 	};
 	const handleOnEditReminder = (event, reminder) => {
 		event.preventDefault();
-		//console.log(reminder);
-		//0 - Title, 1 - Date, 2 - Time, 3 - color
+
 		const formData = [...event.target];
 		const {
 			title,

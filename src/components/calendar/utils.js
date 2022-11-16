@@ -52,13 +52,20 @@ export const formDataToReminderObj = formData => {
 	const reminderObj = {
 		title: formData[0].value,
 		date: {
-			day: new Date(formData[1].value).getDate(),
+			day: new Date(formData[1].value).getDate() + 1,
 			month: new Date(formData[1].value).getMonth(),
 			year: new Date(formData[1].value).getFullYear()
 		},
 		time: formData[2].value,
 		color: formData[3].value
 	};
-	//console.log(reminderObj);
+
 	return reminderObj;
+};
+
+export const formatForDate = date => {
+	if (date < 10) {
+		return `0${date}`;
+	}
+	return date;
 };

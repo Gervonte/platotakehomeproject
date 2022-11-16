@@ -1,5 +1,6 @@
 import React from 'react';
 import { MONTHS } from '../calendar/consts';
+import { formatForDate } from '../calendar/utils';
 import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
 import './GeneralModal.css';
 
@@ -15,7 +16,7 @@ const GeneralModal = props => {
 	const handleOnRemoveReminder = (e, reminder) => {
 		props.onRemoveReminder(e, reminder);
 	};
-	//console.log(props.modalProps);
+
 	return (
 		<div>
 			<Modal
@@ -70,11 +71,13 @@ const GeneralModal = props => {
 									<Form.Group as={Col}>
 										<Form.Label>Date</Form.Label>
 										<Form.Control
+											type='date'
 											plaintext
-											readOnly
-											defaultValue={`${MONTHS[props.modalProps.currentMonth]} ${
-												props.modalProps.day
-											}, ${props.modalProps.currentYear}`}
+											defaultValue={`${
+												props.modalProps.currentYear
+											}-${formatForDate(
+												props.modalProps.currentMonth + 1
+											)}-${formatForDate(props.modalProps.day)}`}
 										/>
 									</Form.Group>
 									<Form.Group as={Col}>
@@ -121,11 +124,13 @@ const GeneralModal = props => {
 									<Form.Group as={Col}>
 										<Form.Label>Date</Form.Label>
 										<Form.Control
+											type='date'
 											plaintext
-											readOnly
-											defaultValue={`${MONTHS[props.modalProps.currentMonth]} ${
-												props.modalProps.day
-											}, ${props.modalProps.currentYear}`}
+											defaultValue={`${
+												props.modalProps.currentYear
+											}-${formatForDate(
+												props.modalProps.currentMonth + 1
+											)}-${formatForDate(props.modalProps.day)}`}
 										/>
 									</Form.Group>
 									<Form.Group as={Col}>
